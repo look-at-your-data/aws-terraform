@@ -1,5 +1,6 @@
 provider "aws" {
   region = "${var.aws_region}"
+
   assume_role {
     role_arn     = "${var.provision_role_arn}"
     session_name = "ec2_provision"
@@ -12,7 +13,6 @@ provider "aws" {
 resource "aws_security_group" "twdu_server_sg" {
   name_prefix = "twdu-server-sg-"
   description = "Allow only few inbound traffic from 10.0.0.0/8 and all outbound to 0.0.0.0/0"
-  vpc_id      = "${var.default_vpc}"
 
   ingress {
     from_port   = 22
@@ -42,19 +42,19 @@ data "aws_ami" "amazon_linux_2" {
 
   filter {
     name   = "name"
-    values = ["NNNNN"]
+    values = ["*"]
   }
 }
 
-resource "aws_instance" "ec2_server" {
+resource "aws_instance" "twdu_ec2_server" {
   ami                    = "${data.aws_ami.amazon_linux_2.image_id}"
-  instance_type          = "${var.twdu_server_instance_type}}"
+  instance_type          = "${var.twdu_server_instance_type}"
   vpc_security_group_ids = ["${aws_security_group.twdu_server_sg.id}"]
-  subnet_id              = "${var.vpc_subnet_list[0]}"
-  key_name               = "${var.ec2_key_pair}"
+  key_name               = "${var.twdu_server_default_ec2_key_name}"
+  user_data              = "${file("${var.twdu_server_userdata_file}")}"
 
   tags {
     Owner       =   "${var.tag_owner}"
-    Identifief  =   "${var.tag_identifier}"
+    Identifier  =   "${var.tag_identifier}"
   }
 }
