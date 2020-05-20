@@ -37,7 +37,7 @@ It may contains certain user creation or establishing connection to a service an
 In this example we have just a simple ```user_data.sh``` file which contains
 echoing of "Hello world" string. The output of it can be found in local instance logs or in the cloudwatch logs.
 
-#Run Terraform code to roll out infrastructure
+# Run Terraform code to roll out infrastructure
 Once steps above completed, please, run the following sequence of commands
 in the terraform/ec2-server directory:
 ```
@@ -70,7 +70,7 @@ Notice whether infrastructure is successfully provisioned.
 
 If so try to connect to the instance. Is it possible? How?
 
-#Destroy infrastructure
+# Destroy infrastructure
 If you dont need provisioned ec2 instance and security group anymore,
 then destroy them to reduce billing:
 ```
